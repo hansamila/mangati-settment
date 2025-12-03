@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mwenge24 - Real Estate (Mockup)</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --accent:#0b74de;
+      --muted:#6b7280;
+      --success:#16a34a;
+      --danger:#ef4444;
+      --max-width:1200px;
+      --radius:10px;
+      --shadow: 0 6px 18px rgba(11, 116, 222, 0.08);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:#111;line-height:1.4}
+    .container{max-width:var(--max-width);margin:28px auto;padding:0 20px}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px}
+    .logo img{height:44px;width:44px;border-radius:8px;object-fit:cover}
+    nav{display:flex;align-items:center;gap:18px}
+    nav a{color:#0f1724;text-decoration:none;font-weight:600}
+    .cta{background:var(--accent);color:white;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+    .mobile-menu-btn{display:none;background:transparent;border:0;font-size:22px}
+
+    /* Hero / Search */
+    .hero{
+      margin-top:10px;
+      background: linear-gradient(90deg, rgba(11,116,222,0.06), rgba(11,116,222,0.02));
+      border-radius:var(--radius);
+      padding:30px;
+      display:grid;
+      grid-template-columns:1fr 360px;
+      gap:24px;
+      align-items:center;
+      box-shadow:var(--shadow);
+    }
+    .hero-left h1{margin:0;font-size:28px}
+    .hero-left p{color:var(--muted);margin:8px 0 18px}
+    .search-bar{display:flex;gap:8px}
+    .search-bar input, .search-bar select{padding:12px 14px;border-radius:8px;border:1px solid #e6e9ef;flex:1}
+    .search-bar button{background:var(--accent);color:white;border:0;padding:12px 18px;border-radius:8px;font-weight:700}
+
+    /* Featured */
+    .featured{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-top:22px}
+    .card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(15,23,36,0.03)}
+    .card img{width:100%;height:160px;object-fit:cover;display:block}
+    .card-body{padding:14px}
+    .price{font-weight:800;color:var(--accent);font-size:18px}
+    .meta{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* Layout: sidebar + main listings */
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:20px;margin-top:24px}
+    .panel{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
+    .filters label{display:block;font-weight:700;margin:10px 0 6px}
+    .filters input[type="range"]{width:100%}
+    .list-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+
+    /* property detail modal */
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.45);z-index:1200;padding:20px;
+    }
+    .modal.open{display:flex}
+    .modal-card{background:var(--card);width:100%;max-width:980px;border-radius:12px;overflow:hidden;display:grid;grid-template-columns:1fr 360px}
+    .modal-images{height:100%;min-height:320px}
+    .modal-images img{width:100%;height:320px;object-fit:cover;display:block}
+    .modal-body{padding:18px}
+    .modal-side{background:#fafbfd;padding:18px}
+
+    /* forms */
+    form .row{display:flex;gap:10px}
+    form input, form select, form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:white;font-weight:700;text-decoration:none}
+    .secondary{background:#e6eefc;color:var(--accent);font-weight:700}
+
+    /* footer */
+    footer{margin-top:30px;padding:18px 0;color:var(--muted);text-align:center}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .layout{grid-template-columns:1fr}
+      nav{display:none}
+      .mobile-menu-btn{display:block}
+    }
+    @media (max-width:520px){
+      .hero-left h1{font-size:20px}
+      .card img{height:140px}
+    }
+
+    /* small utilities */
+    .muted{color:var(--muted);font-size:13px}
+    .flex{display:flex;align-items:center;gap:10px}
+    .gap10{gap:10px}
+    .pill{padding:6px 8px;border-radius:999px;background:#eef6ff;color:var(--accent);font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <img src="https://images.unsplash.com/photo-1560184897-6b57d7f73b19?q=80&w=400&auto=format&fit=crop&crop=faces" alt="logo">
+        Mwenge24
+      </div>
+
+      <nav>
+        <a href="#">Nyumba za Kupanga</a>
+        <a href="#">Nyumba za Kuuza</a>
+        <a href="#">Viwanja</a>
+        <a href="#">Wasiliana</a>
+        <a class="cta" href="#add">Weka Tangazo</a>
+      </nav>
+
+      <button class="mobile-menu-btn" id="mobileBtn">☰</button>
+    </header>
+
+    <!-- HERO / SEARCH -->
+    <section class="hero" aria-label="search">
+      <div class="hero-left">
+        <h1>Pata makazi kwa urahisi — pangisha, nunua au uone viwanja</h1>
+        <p>Search kwa eneo, bei, aina na idadi ya vyumba. Tangazo lako linaweza kuwa hapa!</p>
+
+        <div class="search-bar" role="search">
+          <input id="q" type="text" placeholder="Tafuta eneo (mf. Sinza, Mbezi...)">
+          <select id="type">
+            <option value="">Aina zote</option>
+            <option value="rent">Kupangisha</option>
+            <option value="sale">Kuuza</option>
+            <option value="land">Kiwanja</option>
+          </select>
+          <button id="searchBtn">Tafuta</button>
+        </div>
+
+        <div style="margin-top:14px" class="flex gap10">
+          <div class="pill">Featured</div>
+          <div class="muted">Tangazo mpya kila wiki</div>
+        </div>
+      </div>
+
+      <div>
+        <!-- small summary / stats -->
+        <div style="background:white;padding:14px;border-radius:12px;box-shadow:var(--shadow)">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="muted">Listings</div>
+              <div style="font-weight:800;font-size:20px">1,248</div>
+            </div>
+            <div>
+              <div class="muted">Agents</div>
+              <div style="font-weight:800;font-size:20px">68</div>
+            </div>
+            <div>
+              <div class="muted">Viwanja</div>
+              <div style="font-weight:800;font-size:20px">302</div>
+            </div>
+          </div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid #eef3fb">
+          <div style="display:flex;gap:8px">
+            <a class="secondary" style="padding:8px 10px;border-radius:8px;text-decoration:none" href="#list">Tazama Listings</a>
+            <a class="btn" href="#add">Weka Tangazo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURED -->
+    <h3 style="margin-top:24px">Featured Listings</h3>
+    <div class="featured" id="featured">
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1560184897-6b57d7f73b19?q=80&w=1200&auto=format&fit=crop" alt="house">
+        <div class="card-body">
+          <div class="price">Tsh 350,000 / mwezi</div>
+          <div style="font-weight:700">Apartment 2 vyumba — Sinza</div>
+          <div class="meta">Parking · Maji · Umeme · 45 sqm</div>
+          <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1572120360610-d971b9b9a2fc?q=80&w=1200&auto=format&fit=crop" alt="house2">
+        <div class="card-body">
+          <div class="price">Tsh 95,000,000</div>
+          <div style="font-weight:700">Kiwanja 600 sqm — Goba</div>
+          <div class="meta">Hati miliki · Njia lami · Maji</div>
+          <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1200&auto=format&fit=crop" alt="house3">
+        <div class="card-body">
+          <div class="price">Tsh 1,200,000 / mwezi</div>
+          <div style="font-weight:700">Nyumba ya familia 4 vyumba — Mbezi</div>
+          <div class="meta">Garden · Parking · 3 toilets</div>
+          <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+        </div>
+      </article>
+    </div>
+
+    <!-- LAYOUT: Filters + Listings -->
+    <section class="layout" id="list">
+      <aside class="panel">
+        <h4>Filter</h4>
+        <div class="filters" style="margin-top:8px">
+          <label>Bei (Tsh) </label>
+          <input id="priceRange" type="range" min="0" max="200000000" step="1000000" value="10000000">
+
+          <label>Eneo</label>
+          <select id="areaFilter">
+            <option value="">Eneo zote</option>
+            <option>Mbezi</option>
+            <option>Sinza</option>
+            <option>Goba</option>
+            <option>Msasani</option>
+          </select>
+
+          <label>Aina</label>
+          <select id="typeFilter">
+            <option value="">Aina zote</option>
+            <option value="rent">Kupangisha</option>
+            <option value="sale">Kuuza</option>
+            <option value="land">Kiwanja</option>
+          </select>
+
+          <label>Vyumba</label>
+          <select id="bedFilter">
+            <option value="">--</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4+</option>
+          </select>
+
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <button class="btn" id="applyFilter">Apply</button>
+            <button class="secondary" id="clearFilter">Clear</button>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3>Listings</h3>
+          <div class="muted">Showing 1–12 of 1,248</div>
+        </div>
+
+        <div class="list-grid" id="listings">
+          <!-- example listing cards -->
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1200&auto=format&fit=crop" alt="">
+            <div class="card-body">
+              <div class="price">Tsh 650,000 / mwezi</div>
+              <div style="font-weight:700">House 3 vyumba — Msasani</div>
+              <div class="meta">Garden · Parking · 120 sqm</div>
+              <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1600607680699-07b7f6b8a5b1?q=80&w=1200&auto=format&fit=crop" alt="">
+            <div class="card-body">
+              <div class="price">Tsh 45,000,000</div>
+              <div style="font-weight:700">Apartment 2 vyumba — Kariakoo</div>
+              <div class="meta">Lift · Parking · 70 sqm</div>
+              <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="">
+            <div class="card-body">
+              <div class="price">Tsh 12,500,000</div>
+              <div style="font-weight:700">Kiwanja 400 sqm — Mbezi</div>
+              <div class="meta">Hati · Njia lami</div>
+              <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+            </div>
+          </article>
+
+          <!-- add more cards or render dynamically -->
+        </div>
+
+        <!-- pagination (static) -->
+        <div style="margin-top:18px;display:flex;justify-content:center;gap:8px">
+          <button class="secondary">«</button>
+          <button class="secondary">1</button>
+          <button class="secondary">2</button>
+          <button class="secondary">3</button>
+          <button class="secondary">»</button>
+        </div>
+      </main>
+    </section>
+
+    <!-- ADD PROPERTY FORM -->
+    <section id="add" style="margin-top:26px">
+      <h3>Weka Tangazo (Preview Form)</h3>
+      <div class="panel">
+        <form id="addForm" onsubmit="event.preventDefault(); submitListing()">
+          <div class="row" style="margin-bottom:10px">
+            <input id="title" placeholder="Title - eg. Apartment 2 vyumba, Sinza">
+            <input id="price" placeholder="Bei (Tsh)">
+          </div>
+
+          <div class="row" style="margin-bottom:10px">
+            <select id="propType">
+              <option value="rent">Kupangisha</option>
+              <option value="sale">Kuuza</option>
+              <option value="land">Kiwanja</option>
+            </select>
+            <input id="area" placeholder="Eneo (mf. Sinza)">
+          </div>
+
+          <div style="margin-bottom:10px">
+            <textarea id="desc" rows="4" placeholder="Maelezo ya property"></textarea>
+          </div>
+
+          <div style="margin-bottom:10px">
+            <input id="image" placeholder="URL ya picha (temporary)"/>
+          </div>
+
+          <div style="display:flex;gap:10px;align-items:center">
+            <button class="btn" type="submit">Weka Tangazo</button>
+            <div class="muted">Tangazo litakuwepo hapa kama preview — hakijalindwa kwenye server (mockup).</div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- MODAL (single property detail) -->
+    <div class="modal" id="modal">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <div>
+          <div class="modal-images">
+            <img id="modalImg" src="" alt="property image">
+          </div>
+          <div style="padding:14px">
+            <h2 id="modalTitle">Tsh 0</h2>
+            <div id="modalMeta" class="muted">Eneo · Aina</div>
+            <p id="modalDesc" style="margin-top:8px;color:var(--muted)"></p>
+          </div>
+        </div>
+
+        <aside class="modal-side">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:800;font-size:18px" id="modalPrice">Tsh 0</div>
+            <button onclick="closeModal()" style="background:transparent;border:0;font-size:20px">✕</button>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="muted">Wasiliana</div>
+            <div style="margin-top:8px">
+              <a class="btn" href="#">Piga Simu</a>
+              <a class="secondary" style="margin-left:8px" href="#">WhatsApp</a>
+            </div>
+          </div>
+
+          <div style="margin-top:14px">
+            <div class="muted">Ramani</div>
+            <div style="height:120px;background:#e8eefc;border-radius:8px;margin-top:8px;display:flex;align-items:center;justify-content:center">Map mock</div>
+          </div>
+
+          <div style="margin-top:12px">
+            <div class="muted">Properties sawa</div>
+            <div style="margin-top:8px">
+              <div style="background:white;padding:8px;border-radius:8px;box-shadow:var(--shadow);margin-bottom:8px">Apartment 2 — Tsh 300,000</div>
+              <div style="background:white;padding:8px;border-radius:8px;box-shadow:var(--shadow);">Kiwanja 400sqm — Tsh 12,500,000</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <footer>
+      © <strong>Mwenge24</strong> — Real estate mockup • Tovuti hii ni demo tu
+    </footer>
+  </div>
+
+  <script>
+    // Mobile nav toggle (simple)
+    const mobileBtn = document.getElementById('mobileBtn');
+    mobileBtn && mobileBtn.addEventListener('click', () => {
+      // very small simple mobile nav using alert (you can replace)
+      const menu = "Menu:\\n1. Nyumba za Kupanga\\n2. Nyumba za Kuuza\\n3. Viwanja\\n4. Wasiliana\\n5. Weka Tangazo";
+      alert(menu);
+    });
+
+    // Modal behaviour: sample content
+    const modal = document.getElementById('modal');
+    function openModalSample(e){
+      e && e.preventDefault();
+      // Fill modal with sample data (in real app you'd pass id and fetch data)
+      document.getElementById('modalImg').src = "https://images.unsplash.com/photo-1560184897-6b57d7f73b19?q=80&w=1200&auto=format&fit=crop";
+      document.getElementById('modalTitle').innerText = "Apartment 2 vyumba — Sinza";
+      document.getElementById('modalMeta').innerText = "Sinza · Kupangisha · 2 vyumba";
+      document.getElementById('modalDesc').innerText = "Nyumba nzuri katika mtaa mtulivu, karibu na shule na soko. Parking, maji na umeme vipo. Area 45 sqm.";
+      document.getElementById('modalPrice').innerText = "Tsh 350,000 / mwezi";
+      modal.classList.add('open');
+    }
+    function closeModal(){ modal.classList.remove('open'); }
+
+    // close modal on backdrop click
+    modal.addEventListener('click', (ev) => {
+      if(ev.target === modal) closeModal();
+    });
+
+    // Add property form (client-side preview)
+    function submitListing(){
+      const title = document.getElementById('title').value || "Listing mpya";
+      const price = document.getElementById('price').value || "0";
+      const type = document.getElementById('propType').value;
+      const area = document.getElementById('area').value || "Unknown";
+      const desc = document.getElementById('desc').value || "";
+      const img = document.getElementById('image').value || "https://images.unsplash.com/photo-1560184897-6b57d7f73b19?q=80&w=1200&auto=format&fit=crop";
+
+      const container = document.getElementById('listings');
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${img}" alt="">
+        <div class="card-body">
+          <div class="price">${price ? 'Tsh ' + price : 'Bei'}</div>
+          <div style="font-weight:700">${title} — ${area}</div>
+          <div class="meta">${type} · preview</div>
+          <div style="margin-top:10px"><a href="#" class="btn" onclick="openModalSample(event)">Tazama</a></div>
+        </div>
+      `;
+      container.prepend(card);
+      alert("Tangazo limeongezwa kwenye preview (local). Katika app halisi itahifadhiwa kwenye server/database.");
+      document.getElementById('addForm').reset();
+      window.scrollTo({top:card.offsetTop - 80, behavior:'smooth'});
+    }
+
+    // Filters (demo behaviour)
+    document.getElementById('applyFilter').addEventListener('click', () => {
+      const area = document.getElementById('areaFilter').value;
+      const type = document.getElementById('typeFilter').value;
+      const maxPrice = document.getElementById('priceRange').value;
+      alert('Filter applied (demo)\\nEneo: ' + area + '\\nAina: ' + type + '\\nMax price: ' + maxPrice);
+      // implement real filtering by rendering server filtered results or filtering local dataset
+    });
+    document.getElementById('clearFilter').addEventListener('click', () => {
+      document.getElementById('areaFilter').value = '';
+      document.getElementById('typeFilter').value = '';
+      document.getElementById('priceRange').value = 10000000;
+    });
+
+    // Basic search (demo)
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      const q = document.getElementById('q').value;
+      const t = document.getElementById('type').value;
+      alert('Searching (demo)\\nQuery: ' + q + '\\nType: ' + t);
+      // connecting to backend required for real results
+    });
+  </script>
+</body>
+</html>
